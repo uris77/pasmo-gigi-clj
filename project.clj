@@ -15,6 +15,9 @@
          :destroy pasmo-gigi.handler/destroy}
   :profiles
   {:uberjar    {:aot :all}
+
+   :dev-common {:dependencies [[ring/ring-mock "0.2.0"] [ring/ring-devel "1.4.0"]]}
+   :dev        [:dev-common]
    :production {:ring
                 {:open-browser? false, :stacktraces? false, :auto-reload? false}}
-   :dev        {:dependencies [[ring/ring-mock "0.2.0"] [ring/ring-devel "1.4.0"]]}})
+   :production [:production-common]})
