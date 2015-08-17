@@ -19,12 +19,10 @@
   :ring {:handler pasmo-gigi.handler/site-and-api
          :init    pasmo-gigi.handler/init
          :destroy pasmo-gigi.handler/destroy}
-  :profiles
-  {:uberjar           {:aot :all}
-
-   :dev-common        {:dependencies [[ring/ring-mock "0.2.0"] [ring/ring-devel "1.4.0"]]
-                       :env {:dev? true}}
-   :dev               [:dev-env-vars :dev-common]
-   :production-common {:ring
-                       {:open-browser? false, :stacktraces? false, :auto-reload? false}}
-   :production        [:production-common]})
+  :profiles {:uberjar           {:aot :all}
+             :dev-common        {:dependencies [[ring/ring-mock "0.2.0"] [ring/ring-devel "1.4.0"]]
+                                 :env {:dev? true}}
+             :dev               [:dev-env-vars :dev-common]
+             :production-common {:ring
+                                 {:open-browser? false, :stacktraces? false, :auto-reload? false}}
+             :production        [:production-common]})

@@ -1,6 +1,6 @@
 (ns pasmo-gigi.db.surveys
-  (:import [org.bson.types ObjectId]
-           [java.util Date])
+  (:import org.bson.types.ObjectId
+           java.util.Date)
   (:require [monger.core :as mg]
             [monger.collection :as coll]
             [monger.query :as mq]
@@ -37,7 +37,7 @@
   (let [dateCreated (Date.)
         year (Integer/parseInt (:year survey-map))
         survey (-> (assoc survey-map :dateCreated dateCreated)
-                   (assoc-in [:userName user-name])
+                   (assoc-in [:userName] user-name)
                    (assoc-in [:year] year)
                    (assoc-in [:monthOrder] (add-month-order survey-map)))]
 
@@ -67,6 +67,5 @@
   {:pre [(string? location-id)]}
   (let [surveys (coll/find-maps db surveys-coll {:location.id location-id})]
     (map #(assoc % :id (:_id %)) surveys)))
-
 
 

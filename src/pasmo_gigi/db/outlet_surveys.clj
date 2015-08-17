@@ -1,11 +1,13 @@
 (ns pasmo-gigi.db.outlet-surveys
-    (:import org.bson.types.ObjectId)
-    (:require [environ.core :refer [env]]
-              [monger.core :as mg]
-              [monger.collection :as coll]
-              [pasmo-gigi.db.core :as db :refer [connect! mongo-connection!]]
-              [pasmo-gigi.db.surveys :as surveys]
-              [pasmo-gigi.db.locations :as locations]))
+  (:import org.bson.types.ObjectId
+           java.util.Date)
+  (:require [environ.core :refer [env]]
+            [monger.core :as mg]
+            [monger.collection :as coll]
+            [monger.operators :refer [$set]]
+            [pasmo-gigi.db.core :as db :refer [connect! mongo-connection!]]
+            [pasmo-gigi.db.surveys :as surveys]
+            [pasmo-gigi.db.locations :as locations]))
 
 (def mconn (mongo-connection!))
 (def db (:db mconn))
@@ -60,4 +62,39 @@
   (let [oid (ObjectId. survey-id)
         surveys (coll/find-maps db osurveys-coll {:outletType outlet-type :survey.id oid})]
     (map #(assoc % :id (:_id %)) surveys)))
+
+(defn find-by-id
+  [survey-id]
+  {:pre [(string? survey-id)]}
+  (let [oid (ObjectId. survey-id)
+        outlet-survey (coll/find-map-by-id db osurveys-coll oid)]
+    (assoc outlet-survey :id (:_id outlet-survey))))
+
+(defn create-survey
+  [params user-name]
+  {:pre [(string? user-name)]}
+  (let [survey-entity  (surveys/find-by-id (:survey-id params))
+        survey         (into {} {:id (:_id survey-entity) 
+                                 :year (:year survey-entity) 
+                                 :month (:month survey-entity)})
+        location       (assoc (:location params) :id (ObjectId. (get-in params [:location :id])))
+        date-created   (Date.)
+        outlet-survey  (-> params
+                           (assoc :location location)
+                           (assoc :survey survey)
+                           (assoc :dateCreated date-created)
+                           (assoc :createdBy user-name))
+        created-survey (coll/insert-and-return db osurveys-coll outlet-survey)]
+    (assoc created-survey :id (:_id created-survey))))
+
+(defn edit-survey
+  [survey-id params user-name]
+  {:pre [(string? survey-id)
+         (string? user-name)]}
+  (let [oid (ObjectId. survey-id)
+        outlet-survey (-> params
+                          (assoc :dateUpdated (Date.))
+                          (assoc :updatedBy user-name))]
+    (coll/update-by-id db osurveys-coll oid {$set outlet-survey})
+    (find-by-id survey-id)))
 
