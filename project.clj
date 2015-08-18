@@ -24,6 +24,8 @@
 
   :main pasmo-gigi.server
 
+  :min-lein-version "2.0.0"
+
   :uberjar-name "pasmo-gigi.jar"
 
   :ring {:handler pasmo-gigi.handler/site-and-api
