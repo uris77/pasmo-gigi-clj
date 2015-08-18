@@ -1,6 +1,6 @@
 (defproject pasmo-gigi "1.0.0-SNAPSHOT"
   :description "PASMO's GIGI CRUD App."
-  :url "http://example.com/FIXME"
+  :url "http://pasmo.bz"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [environ "1.0.0"]
                  [compojure "1.4.0"]
