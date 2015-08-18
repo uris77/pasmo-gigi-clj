@@ -14,7 +14,8 @@
 
 (defn find-user [email]
   (let [user (coll/find-one-as-map db users-coll {:email email})]
-    (assoc user :roles (map #(keyword %) (:roles user)))))
+    (when user
+      (assoc user :roles (map #(keyword %) (:roles user))))))
 
 ;; {:user :first-name :errors {:email :first-name :last-name}}
 (defn- validate-field [user-map field]

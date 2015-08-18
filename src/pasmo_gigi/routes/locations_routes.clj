@@ -57,17 +57,17 @@
 
 (defroutes routes
   (context "/api/locations" []
-           (GET "/" req (authorize #{:pasmo-gigi.auth-config/user} (loc/all)))
+           (GET "/" req (authorize #{:pasmo-gigi.db.users/user} (loc/all)))
            (GET "/search" {params :query-params}
-                (authorize #{:pasmo-gigi.auth-config/user} (find-location-by-name params)))
+                (authorize #{:pasmo-gigi.db.users/user} (find-location-by-name params)))
            (GET "/:id" [id] 
-                (authorize #{:pasmo-gigi.auth-config/user} (find-location-by-id id)))
+                (authorize #{:pasmo-gigi.db.users/user} (find-location-by-id id)))
            (DELETE "/:id" [id]
-                   (authorize #{:pasmo-gigi.auth-config/user} (delete-location id)))
+                   (authorize #{:pasmo-gigi.db.userse/user} (delete-location id)))
            (PUT "/:id" [id :as req]
-                (authorize #{:pasmo-gigi.auth-config/user} (edit-location id req)))
+                (authorize #{:pasmo-gigi.db.users/user} (edit-location id req)))
            (POST "/" req 
-                 (authorize #{:pasmo-gigi.auth-config/user} (create-location-handler req)))
+                 (authorize #{:pasmo-gigi.db.users/user} (create-location-handler req)))
            (GET "/byType/:location-type" [location-type]
-                (authorize #{:pasmo-gigi.auth-config/user} (find-locations-by-type location-type)))))
+                (authorize #{:pasmo-gigi.db.users/user} (find-locations-by-type location-type)))))
 

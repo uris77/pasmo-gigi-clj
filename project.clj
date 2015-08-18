@@ -2,6 +2,7 @@
   :description "PASMO's GIGI CRUD App."
   :url "http://pasmo.bz"
   :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/tools.logging "0.3.1"]
                  [environ "1.0.0"]
                  [compojure "1.4.0"]
                  [hiccup "1.0.5"]

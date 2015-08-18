@@ -3,6 +3,7 @@
             [friend-oauth2.util :refer [format-config-uri]]
             [cemerick.friend :as friend]
             [pasmo-gigi.db.users :as user-db]
+            [clojure.tools.logging :as log]
             [clj-http.client :as http-client]))
 
 (def default-admin (env :default-admin))
@@ -35,6 +36,14 @@
 (defn user-email-from-profile [profile]
   (:value (first (:emails profile))))
 
+(defn add-token
+  [email first-name last-name]
+  (let [user (user-db/add-api-token email first-name last-name (new-uuid))]
+    (log/info "Logged In: " user)
+    (if (nil? user)
+      {:rules #{}}
+      user)))
+
 (defn credential-fn [token]
   (let [access-token (:access-token token)
         profile (:body (fetch-google-user-info access-token))
@@ -42,11 +51,8 @@
         first-name (get-in profile [:name :givenName])
         last-name (get-in profile [:name :familyName])]
     (if (= email default-admin)
-      (do  {:identity token :roles #{::user}})
-      (let [user (user-db/add-api-token email first-name last-name (new-uuid))]
-        (if (nil? user)
-          {:roles #{}}
-          user)))))
+      (add-token email first-name last-name)
+      (add-token email first-name last-name))))
 
 
 (def client-config
