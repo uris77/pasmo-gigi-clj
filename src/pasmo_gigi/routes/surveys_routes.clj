@@ -28,10 +28,10 @@
 (defroutes routes
   (context "/api/surveys" []
            (GET "/" req
-                (authorize #{:user} (surveys/all)))
+                (authorize #{:pasmo-gigi.auth-config/user} (surveys/all)))
            (POST "/" req
-                 (authorize #{:user} (create-survey req)))
+                 (authorize #{:pasmo-gigi.auth-config/user} (create-survey req)))
            (GET "/:id" [id]
-                (authorize #{:user} (get-survey id)))))
+                (authorize #{:pasmo-gigi.auth-config/user} (get-survey id)))))
 
 
