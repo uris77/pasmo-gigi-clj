@@ -35,6 +35,15 @@
   :profiles {:uberjar-common    {:aot         :all
                                  :omit-source true
                                  :main pasmo-gigi.server}
+             :uberjar-env-vars {:mongo-uri      (System/getenv "MONGO_URI")
+                                :db             (System/getenv "DB")
+                                :default-admin  (System/getenv "DEFAULT_ADMIN")
+                                :client-id      (System/getenv "CLIENT_ID")
+                                :client-secret  (System/getenv "CLIENT_SECRET")
+                                :oauth-callback (System/getenv "OAUTH_CALLBACK")
+                                :auth-url       (System/getenv "AUTH_URL")
+                                :token-url      (System/getenv "TOKEN_URL")
+                                :profile-url    (System/getenv "PROFILE_URL")}
              :uberjar           [:uberjar-common :uberjar-env-vars]
              :dev-common        {:dependencies [[ring/ring-mock "0.2.0"] [ring/ring-devel "1.4.0"]]
                                  :env {:dev? true}
