@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -jar pasmo-gigi.jar
+web: java $JVM_OPTS -cp target/pasmo-gigi.jar clojure.main -m pasmo-gigi.server
