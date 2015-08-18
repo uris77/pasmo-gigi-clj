@@ -5,7 +5,7 @@
             [monger.core :as mg]
             [monger.collection :as coll]
             [monger.operators :refer [$set]]
-            [pasmo-gigi.db.core :as db :refer [connect! mongo-connection!]]
+            [pasmo-gigi.db.core :as db :refer [mongo-connection!]]
             [pasmo-gigi.db.surveys :as surveys]
             [pasmo-gigi.db.locations :as locations]))
 

@@ -63,7 +63,6 @@
   "Update an existing location."
   [location-id update-params]
   {:pre [(string? location-id)]}
-  (clojure.pprint/pprint update-params)
   (let [oid (ObjectId. location-id)
         lon (Double/parseDouble (get-in update-params [:loc :lon]))
         lat (Double/parseDouble (get-in update-params [:loc :lat]))
