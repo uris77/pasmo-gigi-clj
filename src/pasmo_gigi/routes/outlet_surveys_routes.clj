@@ -41,12 +41,12 @@
 (defroutes routes
   (context "/api/outletSurveys" []
            (GET "/:id/:outlet-type" [id outlet-type]
-                (authorize #{:user} (find-all-outlet-surveys id outlet-type)))
+                (authorize #{:pasmo-gigi.auth-config/user} (find-all-outlet-surveys id outlet-type)))
            (POST "/:survey-id" [survey-id :as req]
-                 (authorize #{:user} (create-survey survey-id req)))
+                 (authorize #{:pasmo-gigi.auth-config/user} (create-survey survey-id req)))
            (GET "/:survey-id" [survey-id]
-                (authorize #{:user} (find-by-id survey-id)))
+                (authorize #{:pasmo-gigi.auth-config/user} (find-by-id survey-id)))
            (PUT "/:survey-id" [survey-id :as req]
-                (authorize #{:user} (edit-survey survey-id req)))))
+                (authorize #{:pasmo-gigi.auth-config/user} (edit-survey survey-id req)))))
 
 
