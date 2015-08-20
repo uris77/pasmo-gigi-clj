@@ -36,14 +36,14 @@
   (let [user (find-user (:email user-map))
         errors (validate-user user-map)]
     (if (or (empty? errors) (nil? user))
-      (coll/insert-and-return db users-coll user-map)
+      (assoc  (coll/insert-and-return db users-coll user-map) :roles #{::user})
       errors)))
 
 (defn update-user
   [oid updateq]
   (coll/update-by-id db users-coll oid updateq)
   (let [user (coll/find-map-by-id db users-coll oid)]
-    (assoc user :roles (mapv #(keyword %) (:roles user)))))
+    (assoc user :roles #{::user})))
 
 (defn all 
   "List all users."
@@ -56,8 +56,7 @@
       (create-user {:email email :first-name first-name :last-name last-name :api-token token :roles #{::user}})
       (update-user (:_id user) {$set {:api-token token}}))))
 
-
-(defn remove
+(defn remove-user
   [id]
   (let [oid (ObjectId. id)] 
     (coll/remove-by-id db users-coll oid)))
